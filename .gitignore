@@ -1,0 +1,13 @@
+# Root .gitignore
+node_modules/
+.env
+.env.local
+.env.*.local
+dist/
+build/
+.next/
+*.pem
+*.key
+.DS_Store
+*.log
+/docker/coturn/logs/

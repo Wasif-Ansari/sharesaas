@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Next.js Web App
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: p2p-share-web
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_SIGNALING_URL=ws://localhost:8080
+    restart: unless-stopped
+    networks:
+      - p2p-share
+    depends_on:
+      - signaling
+
+  # Signaling Server
+  signaling:
+    build:
+      context: ./apps/signaling
+      dockerfile: Dockerfile
+    container_name: p2p-share-signaling
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+    restart: unless-stopped
+    networks:
+      - p2p-share
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # TURN Server (coturn) for NAT traversal
+  turn:
+    image: coturn/coturn:4.6.2
+    container_name: p2p-share-turn
+    ports:
+      - "3478:3478/tcp"
+      - "3478:3478/udp"
+      - "5349:5349/tcp"
+      - "5349:5349/udp"
+    volumes:
+      - ./docker/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro
+      - ./docker/coturn/realm.txt:/etc/coturn/realm.txt:ro
+    restart: unless-stopped
+    networks:
+      - p2p-share
+
+networks:
+  p2p-share:
+    driver: bridge

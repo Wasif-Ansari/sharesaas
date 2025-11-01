@@ -1,0 +1,42 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mobile optimizations */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  overscroll-behavior-y: none;
+}
+
+/* Smooth scrolling for better mobile experience */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Prevent zoom on input focus on iOS */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+@media screen and (max-width: 640px) {
+  /* Ensure no horizontal scroll on mobile */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Better touch targets */
+  button, a, input, label {
+    min-height: 44px;
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "saas-p2p",
+  "version": "1.0.0",
+  "description": "Cross-device P2P file sharing with WebRTC",
+  "private": true,
+  "scripts": {
+    "install-all": "npm install && cd apps/web && npm install && cd ../signaling && npm install",
+    "dev": "concurrently \"npm run dev:web\" \"npm run dev:signaling\"",
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:signaling": "cd apps/signaling && npm run dev",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:clean": "docker-compose down -v"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
