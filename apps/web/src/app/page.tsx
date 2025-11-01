@@ -502,7 +502,7 @@ export default function Home() {
                 display: 'inline-block'
               }}>
                 <QRCode 
-                  value={`http://${typeof window !== 'undefined' ? location.hostname : 'localhost'}:3000?code=${code}`} 
+                  value={`${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'}?code=${code}`} 
                   size={qrSize} 
                 />
               </div>
