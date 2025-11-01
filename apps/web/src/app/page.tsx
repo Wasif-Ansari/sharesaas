@@ -5,10 +5,15 @@ import { useSignaling, computeFileSha256, type FileTransferProgress } from '@/li
 
 export default function Home() {
   const signalingUrl = useMemo(() => {
-    if (typeof window === 'undefined') return 'ws://localhost:8080';
-    const host = window.location.hostname === 'localhost' ? '127.0.0.1' : window.location.hostname;
-    const url = `ws://${host}:8080`;
-    console.log('?? Signaling URL:', url);
+    if (typeof window === 'undefined') return process.env.NEXT_PUBLIC_SIGNALING_URL || 'ws://localhost:8080';
+    
+    // Use environment variable in production, localhost in development
+    const url = process.env.NEXT_PUBLIC_SIGNALING_URL || 
+                (window.location.hostname === 'localhost' 
+                  ? 'ws://127.0.0.1:8080' 
+                  : `ws://${window.location.hostname}:8080`);
+    
+    console.log('🔗 Signaling URL:', url);
     return url;
   }, []);
 
